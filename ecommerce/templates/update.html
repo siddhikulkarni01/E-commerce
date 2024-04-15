@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="jumbotron">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card card-body">
+                    <form action="{% url 'update' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{user1.as_p}}
+                        {{user2.as_p}}
+                        <button>Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

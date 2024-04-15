@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+<style>
+    /* CSS for table cell borders */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        /* border: 1px solid #dddddd; */
+        text-align: left;
+        padding: 8px;
+    }
+</style>
+<body>
+
+    <div class="container"><br>
+        <div class="jumbotron">
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+                    <div class="card card-body">
+                        <h1 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><center>Shopping Cart</center></h1><hr>
+    
+    <form method="POST" action="{% url 'update_cart' %}">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th><strong>Name</strong></th>
+                    <th><strong>Quantity</strong></th>
+                    <th><strong>Price</strong></th>
+                    <th><strong>Subtotal</strong></th>
+                    <th><strong>Image </strong></th>
+                    <th><strong>Delete</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>
+                            <button type="submit" name="item_id" value="{{ item.id }}_increment">+</button>
+                            <input type="text" name="quantity_{{ item.id }}" value="{{ item.quantity }}" style="width: 30px;" readonly>
+                            <button type="submit" name="item_id" value="{{ item.id }}_decrement">-</button>
+                        </td>
+                        
+                        
+                        <td>Rs.{{ item.product.price }}</td>
+                        <td>Rs.{{ item.multiply }}</td>
+                        <td>
+                            {% if item.product.image %}
+                            <img src="{{item.product.image.url}}" style="width: 100px;height: 100px;">
+                            {% endif %}
+                        </td>
+                        <td><p><a class="btn btn-outline-warning" href="{% url 'remove_from_cart' item.id %}">Remove from cart</a></p></td>
+
+
+                    </tr>
+                
+                <tr>
+                    {% endfor %}
+                
+                </tr>
+               
+            </tbody>
+        </table><hr>
+        <center><strong>Total Amount :</strong>
+            <strong>Rs.{{ total_price }}</strong></center>
+        <hr>
+    <center><a href="{% url 'checkout' %}" class="btn btn-warning" style="width: 60%;">Check Out</a></center>
+
+    </form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container"><br>
+    <div class="jumbotron">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card card-body">
+                    <form action="{% url 'login' %}" method="POST"> 
+                        {% csrf_token%}
+                        <h1><center>Login Form</center></h1><hr>
+                    <center><label>Username  </label> <input type="text" name="username" style="width: 70%;" required><br><br></center>
+                    <center><label>Password  </label> <input type="password" name="password" style="width: 70%;" required><br><br></center>
+                    <center><button class="btn btn-primary" style="width: 80%;height: 100%;">Login</button></center>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <center><a href="{% url 'password_reset' %}">Reset password</a></center>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

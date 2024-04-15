@@ -1,0 +1,65 @@
+<!-- thankyou.html -->
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Orders</title>
+</head>
+<body>
+    <div class="container"><br>
+        <div class="jumbotron">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card card-body">
+                        <h1 style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><center>Thankyou For Your Order is Placed </center></h1><hr>
+                        <h3><center>Your is being processed and will be delivered  </center></h3>
+                        <h3><center>in 3-4 days ! Keep Shopping</center></h3>
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Sub Total</th>
+                                <th>Image</th>
+                                <th>Date of order</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for order in user_orders %}
+                              <tr>
+                                <td>{{ order.product.name }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.price }}</td>
+                                <td>{{ order.total_price }}</td>
+                                <td>
+                                  {% if order.product.image %}
+                                    <img src="{{ order.product.image.url }}" alt="{{ order.product.name }}" style="width: 100px;height: 100px;">
+                                  {% else %}
+                                    No Image Available
+                                  {% endif %}
+                                </td>
+                                <td>{{ order.date }}</td>
+                              </tr>
+                              {% endfor %}
+                              <tr>
+                                <td colspan="3">
+                                <td><strong>Total : Rs.{{ total_price }}</strong></td>
+                                <td></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                          
+                          
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

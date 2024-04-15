@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .font-style {
+        font-family: Arial, sans-serif; /* Change to desired font family */
+        /* Additional styling if needed */
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="container"><br><br>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-body"><br>
+                            <h1 class="font-style"><center>Categories</center></h1><hr>
+                            <form method="POST" action="{% url 'home' %}">
+                                {% csrf_token %}
+                                {% for category in categories %}
+                                    <label>{{ category.category }}</label>
+                                    <!-- Assuming 'category' is the field representing category name -->
+                                    <input type="checkbox" name="category" value="{{ category.category }}">
+                                    <br>
+                                {% endfor %}<br>
+                                <input class="btn btn-info" type="submit" value="Apply Filter">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="jumbotron">
+                <div class="row">
+                    {% for i in product %}
+                        {% if forloop.counter0|divisibleby:3 %}<br>
+                            </div><div class="row justify-content-left"><br>  <!-- Close and reopen row every third product -->
+                        {% endif %}
+                        <div class="col-md-4 "><br>
+                            <div class="card card-body justify-content-center">
+                                {% if request.user.is_authenticated %}
+                                    <form action="{% url 'addcart' i.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <center><label> {{ i.name }}</label></center>
+                                        {% if i.image %}
+                                            <center><img src="{{ i.image.url }}" style="width: 200px;height: 150px;"></center>
+                                        {% endif %}
+                                        <center><label>Price : Rs.{{ i.price }}</label></center><br>
+                                        <center><button type="submit" class="btn btn-info" style="width: 80%;">Add to cart</button></center>
+                                    </form>
+                                {% else %}
+                                    <center><label> {{ i.name }}</label></center>
+                                    {% if i.image %}
+                                        <center><img src="{{ i.image.url }}" style="width: 200px;height: 150px;"></center>
+                                    {% endif %}
+                                    <center><label>Price : Rs.{{ i.price }}</label></center><br>
+                                    
+                                    <center><a href="{% url 'login' %}" class="btn btn-info" style="width: 80%;">Log in to Add to cart</a></center>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}<br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
